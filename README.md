@@ -1,4 +1,4 @@
-# CaptionThis 📷🔤
+# CaptionThis 📷 🔤
 
 A Python command line Deep Learning Model that generates captions describing 
 images passed as inputs.
