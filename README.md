@@ -1,3 +1,4 @@
+![CaptionThisBanner](https://github.com/Jkozmo10/CaptionThis/assets/87344382/12ff49b1-a849-4725-bd6d-dad13dbb2477)
 # CaptionThis 📷 🔤
 
 A Python command line Deep Learning Model that generates captions describing 
