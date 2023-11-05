@@ -1,8 +1,7 @@
 ![CaptionThisBanner](https://github.com/Jkozmo10/CaptionThis/assets/87344382/12ff49b1-a849-4725-bd6d-dad13dbb2477)
 # CaptionThis 📷 🔤
 
-A Python command line Deep Learning Model that generates captions describing 
-images passed as inputs.
+**CaptionThis** is a Python command-line deep learning model that generates captions describing images provided as inputs.
 
 ## Table of Contents
 
@@ -21,6 +20,8 @@ images passed as inputs.
 ## Overview
 
 ### Summary
+
+CaptionThis is a deep learning project aimed at generating descriptive captions for images using Python. The system is accessible through a command-line interface and leverages a large training dataset for improving caption quality.
 
 ### Team
 
@@ -45,7 +46,7 @@ developing!
 
 ### Project Structure
 
-- [TrainingSets](./TrainingSets/) Contains the scripts to scrape images form 
+- [TrainingSets](./TrainingSets/) Contains the scripts to scrape images from 
     [Google's Conceputal Captions Data Sets](https://ai.google.com/research/ConceptualCaptions/download)
 
 ## Contributing
