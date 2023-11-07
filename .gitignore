@@ -1,0 +1,19 @@
+# Python virtual environment
+venv/
+
+# Images (you can specify image extensions, e.g., jpg, png, gif, etc.)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+
+# Data Sets
+*.tsv
+*.csv
