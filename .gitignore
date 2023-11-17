@@ -10,6 +10,7 @@ venv/
 
 # Python cache files
 __pycache__/
+.mypy_cache
 *.pyc
 *.pyo
 
