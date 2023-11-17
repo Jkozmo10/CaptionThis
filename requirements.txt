@@ -1,0 +1,6 @@
+datasets
+git+https://github.com/huggingface/transformers.git@main
+torch
+torchvision
+ipython
+
