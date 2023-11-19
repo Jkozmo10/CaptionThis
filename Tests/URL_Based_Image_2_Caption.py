@@ -7,6 +7,11 @@ import torch
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import time
 
+DELAY_TIME = 3
+DESIRED_WIDTH = 300
+DESIRED_HEIGHT = 300
+TIMEOUT_TIME = 5
+
 # Define the device (cuda for GPU or cpu for CPU), GPU is better
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -15,7 +20,7 @@ while True:
 
   try:
       # A 5-second timeout to reduce system resource usage
-      response = requests.get(image_url, timeout=5)
+      response = requests.get(image_url, timeout=TIMEOUT_TIME)
       response.raise_for_status()
 
       # Validate Image is a JPEG, but other formats should be allowed
@@ -24,9 +29,7 @@ while True:
         print("Error: The image is not in JPEG format.")
       else:
         # Resize the image to reduce system resource usage
-        desired_width = 300
-        desired_height = 300
-        img = img.resize((desired_width, desired_height), Image.LANCZOS)
+        img = img.resize((DESIRED_WIDTH, DESIRED_HEIGHT), Image.LANCZOS)
 
         # Define the model and processor
         model_name = "Salesforce/blip-image-captioning-base"
@@ -44,7 +47,7 @@ while True:
         generated_caption = generated_caption.capitalize() + '.'
         print("\nGenerated Caption:", generated_caption)
         display(img)
-        time.sleep(3)
+        time.sleep(DELAY_TIME)
         # Clear the output to remove the image
         clear_output(wait=True)
 

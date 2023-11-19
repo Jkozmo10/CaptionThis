@@ -38,7 +38,7 @@ with open(tsv_files[1], "r", encoding="utf-8") as file:
                 print(f"Error downloading image {idx + 1}: {str(e)}")
 
             # Add a delay between requests to avoid overloading the server
-            #time.sleep(DELAY_TIME)  # Adjust this delay as needed
+            time.sleep(DELAY_TIME)
 
 print("Download complete.")
 
