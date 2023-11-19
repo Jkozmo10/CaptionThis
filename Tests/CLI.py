@@ -1,10 +1,6 @@
 import argparse
 import os
-import requests
-import time
 from PIL import Image
-from io import BytesIO
-from IPython.display import display, clear_output
 import torch
 from transformers import BlipProcessor, BlipForConditionalGeneration
 import tensorflow as tf
