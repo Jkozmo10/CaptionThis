@@ -7,7 +7,7 @@ from image_caption_dataset import ImageCaptionDataset, get_transform
 
 def main():
     # Set up dataset and dataloader
-    csv_file_path = 'path_to_your_csv_file.csv'  # Replace with your CSV file path
+    csv_file_path = '/Users/nero/Desktop/CaptionThis/data_sets/Images/sorted_output.csv'
     transform = get_transform()
     dataset = ImageCaptionDataset(csv_file_path, transform=transform)
     train_dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
@@ -22,7 +22,7 @@ def main():
     # Training setup
     optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5)
     model.train()
-    num_epochs = 10  # Define the number of epochs
+    num_epochs = 50  # Define the number of epochs
 
     # Training loop
     for epoch in range(num_epochs):
@@ -35,10 +35,11 @@ def main():
             outputs = model(**inputs)
 
             loss = outputs.loss
-            print(f"Loss: {loss.item()}")
+            if loss is not None:
+                print(f"Loss: {loss.item()}")
+                loss.backward()
 
             optimizer.zero_grad()
-            loss.backward()
             optimizer.step()
 
     # Save the trained model
