@@ -1,5 +1,6 @@
 import os
 import requests
+from requests.exceptions import ConnectionError, Timeout
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import logging
@@ -21,30 +22,33 @@ MAXIMUM_NUMBER_OF_IMAGES = 35000
 OUTPUT_CSV_DIR = "."
 OUTPUT_CSV = "downloaded_images.csv"
 VALID_IMAGE_FORMATS = {'JPEG', 'JPG', 'PNG'}
-
 def download_image(idx, caption, image_url):
-    try:
-        response = requests.get(image_url, timeout=TIMEOUT_TIME)
-        if response.status_code == SUCCESS_STATUS_CODE:
-            image_content = BytesIO(response.content)
-            try:
-                with Image.open(image_content) as img:
-                    if img.format in VALID_IMAGE_FORMATS:
-                        ext = '.' + img.format.lower()
-                        image_filename = f"{idx}{ext}"
-                        image_path = os.path.join(OUTPUT_DIRECTORY, image_filename)
-                        img.save(image_path)
-                        logging.info(f"Downloaded and saved: {image_filename}")
-                        return idx, image_filename, caption, image_url
-                    else:
-                        logging.warning(f"Unsupported image format for URL: {image_url}")
-                        return None
-            except IOError:
-                logging.warning(f"Invalid image data for URL: {image_url}")
-                return None
-    except Exception as e:
-        logging.error(f"Error downloading image {idx}: {str(e)}")
-    return None
+    #try:
+    response = requests.get(image_url, timeout=TIMEOUT_TIME)
+    response.raise_for_status()  # Will raise an HTTPError for bad status
+    image_content = BytesIO(response.content)
+
+    with Image.open(image_content) as img:
+        if img.format in VALID_IMAGE_FORMATS:
+            ext = '.' + img.format.lower()
+            image_filename = f"{idx}{ext}"
+            image_path = os.path.join(OUTPUT_DIRECTORY, image_filename)
+            img.save(image_path)
+            print(f"Downloaded and saved: {image_filename}")
+            #logging.info(f"Downloaded and saved: {image_filename}")
+            return idx, image_filename, caption, image_url
+        else:
+            print(f"Unsupported image format for URL: {image_url}")
+            #logging.warning(f"Unsupported image format for URL: {image_url}")
+            return None
+
+    # except (ConnectionError, Timeout) as e:
+    #     logging.error(f"Network error occurred while downloading image {idx}: {e}")
+    # except IOError as e:
+    #     logging.warning(f"Invalid image data for URL: {image_url}: {e}")
+    # except Exception as e:  # This is a catch-all for any other exceptions
+    #      logging.error(f"Unexpected error downloading image {idx}: {e}")
+    #return None
 
 def process_images():
     with ThreadPoolExecutor(max_workers=NUMBER_OF_THREADS) as executor:
