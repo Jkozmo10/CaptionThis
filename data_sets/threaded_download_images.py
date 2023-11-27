@@ -3,12 +3,8 @@ import requests
 from requests.exceptions import ConnectionError, Timeout
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import logging
 from PIL import Image
 from io import BytesIO
-
-# Setup logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(essage)s')
 
 # Constants
 OUTPUT_DIRECTORY = "Images"
@@ -23,7 +19,6 @@ OUTPUT_CSV_DIR = "."
 OUTPUT_CSV = "downloaded_images.csv"
 VALID_IMAGE_FORMATS = {'JPEG', 'JPG', 'PNG'}
 def download_image(idx, caption, image_url):
-    #try:
     response = requests.get(image_url, timeout=TIMEOUT_TIME)
     response.raise_for_status()  # Will raise an HTTPError for bad status
     image_content = BytesIO(response.content)
@@ -35,20 +30,10 @@ def download_image(idx, caption, image_url):
             image_path = os.path.join(OUTPUT_DIRECTORY, image_filename)
             img.save(image_path)
             print(f"Downloaded and saved: {image_filename}")
-            #logging.info(f"Downloaded and saved: {image_filename}")
             return idx, image_filename, caption, image_url
         else:
             print(f"Unsupported image format for URL: {image_url}")
-            #logging.warning(f"Unsupported image format for URL: {image_url}")
             return None
-
-    # except (ConnectionError, Timeout) as e:
-    #     logging.error(f"Network error occurred while downloading image {idx}: {e}")
-    # except IOError as e:
-    #     logging.warning(f"Invalid image data for URL: {image_url}: {e}")
-    # except Exception as e:  # This is a catch-all for any other exceptions
-    #      logging.error(f"Unexpected error downloading image {idx}: {e}")
-    #return None
 
 def process_images():
     with ThreadPoolExecutor(max_workers=NUMBER_OF_THREADS) as executor:
@@ -81,5 +66,3 @@ if __name__ == "__main__":
         csv_writer.writerow(["Index", "Image Filename", "Caption", "Image URL"])
         for idx, filename, caption, url in downloaded_images_info:
             csv_writer.writerow([idx, filename, caption, url])
-
-    logging.info("Download complete.")
