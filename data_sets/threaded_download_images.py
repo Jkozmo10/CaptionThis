@@ -7,17 +7,31 @@ from PIL import Image
 from io import BytesIO
 
 # Constants
-OUTPUT_DIRECTORY = "Images"
-os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
+# For Validation
+OUTPUT_DIRECTORY = "Validation_Images"
+# For Validation
+TSV_FILE = "Validation_GCC-1.1.0-Validation.tsv"
+# For Validation
+OUTPUT_CSV = "validation_images.csv"
+# For Validation
+MAXIMUM_NUMBER_OF_IMAGES = 350
 
-TSV_FILE = "Train_GCC-training.tsv"
+# For Training
+#OUTPUT_DIRECTORY = "Validation_Images"
+# For Training
+#TSV_FILE = "Train_GCC-training.tsv"
+# For Training
+#OUTPUT_CSV = "training_images.csv"
+# For Training
+#MAXIMUM_NUMBER_OF_IMAGES = 3000
+
+os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 SUCCESS_STATUS_CODE = 200
 TIMEOUT_TIME = 5
 NUMBER_OF_THREADS = 10
-MAXIMUM_NUMBER_OF_IMAGES = 350
 OUTPUT_CSV_DIR = "."
-OUTPUT_CSV = "downloaded_images.csv"
 VALID_IMAGE_FORMATS = {'JPEG', 'JPG', 'PNG'}
+
 def download_image(idx, caption, image_url):
     try:
         response = requests.get(image_url, timeout=TIMEOUT_TIME)
