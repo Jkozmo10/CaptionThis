@@ -8,22 +8,22 @@ from io import BytesIO
 
 # Constants
 # For Validation
-OUTPUT_DIRECTORY = "Validation_Images"
+#OUTPUT_DIRECTORY = "Validation_Images"
 # For Validation
-TSV_FILE = "Validation_GCC-1.1.0-Validation.tsv"
+#TSV_FILE = "Validation_GCC-1.1.0-Validation.tsv"
 # For Validation
-OUTPUT_CSV = "validation_images.csv"
+#OUTPUT_CSV = "validation_images.csv"
 # For Validation
-MAXIMUM_NUMBER_OF_IMAGES = 350
+#MAXIMUM_NUMBER_OF_IMAGES = 350
 
 # For Training
-#OUTPUT_DIRECTORY = "Validation_Images"
+OUTPUT_DIRECTORY = "Training_Images"
 # For Training
-#TSV_FILE = "Train_GCC-training.tsv"
+TSV_FILE = "Train_GCC-training.tsv"
 # For Training
-#OUTPUT_CSV = "training_images.csv"
+OUTPUT_CSV = "training_images.csv"
 # For Training
-#MAXIMUM_NUMBER_OF_IMAGES = 3000
+MAXIMUM_NUMBER_OF_IMAGES = 10000
 
 os.makedirs(OUTPUT_DIRECTORY, exist_ok=True)
 SUCCESS_STATUS_CODE = 200
