@@ -17,6 +17,7 @@ __pycache__/
 # Data Sets
 *.tsv
 *.csv
+*.zip
 
 # Visual Studio Code
 .vscode/
