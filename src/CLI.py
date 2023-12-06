@@ -35,7 +35,7 @@ def process_image(image_path, output_csv):
         inputs = processor(images=img, return_tensors="pt").to(device)
 
         # Generate captions with model
-        generated_ids = model.generate(pixel_values=inputs.pixel_values, max_length=50)
+        generated_ids = model.generate(pixel_values=inputs.pixel_values, max_length=300)
 
         # Decode and print the generated caption and display the image
         generated_caption = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
