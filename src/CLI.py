@@ -1,5 +1,8 @@
 import argparse
 import os
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 from PIL import Image
 import torch
 from transformers import BlipProcessor, BlipForConditionalGeneration
@@ -12,6 +15,15 @@ TIMEOUT_TIME = 5
 
 # Define the device (cuda for GPU or cpu for CPU), GPU is better
 device = "cuda" if torch.cuda.is_available() else "cpu"
+# Define the model and processor
+model_name = "Salesforce/blip-image-captioning-base"
+processor = BlipProcessor.from_pretrained(model_name)
+model = BlipForConditionalGeneration.from_pretrained(model_name).to(device)
+model_path = "8k_model/CaptionThis_model_final.pth"
+#model.load_state_dict(torch.load(model_path))
+model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+model.eval()  # Set the model to evaluation mode
+model.to(device)
 
 def process_image(image_path, output_csv):
     try:
@@ -20,31 +32,43 @@ def process_image(image_path, output_csv):
 
         # Validate Image is a JPEG, but other formats should be allowed
         if img_format != "JPEG":
-            print("Error: The image is not in JPEG format.")
+            #print("Error: The image is not in JPEG format.")
             return
 
         # Resize the image to reduce system resource usage
         img = img.resize((DESIRED_WIDTH, DESIRED_HEIGHT), Image.LANCZOS)
 
+        '''
         # Define the model and processor
         model_name = "Salesforce/blip-image-captioning-base"
         processor = BlipProcessor.from_pretrained(model_name)
         model = BlipForConditionalGeneration.from_pretrained(model_name).to(device)
+        model_path = "8k_model/CaptionThis_model_final.pth"
+        #model.load_state_dict(torch.load(model_path))
+        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
+        model.eval()  # Set the model to evaluation mode
+        model.to(device)
+        '''
 
         # Convert the image to torch format for the model and move to the same device as the model
         inputs = processor(images=img, return_tensors="pt").to(device)
 
         # Generate captions with model
-        generated_ids = model.generate(pixel_values=inputs.pixel_values, max_length=300)
+        generated_ids = model.generate(pixel_values=inputs.pixel_values, max_length=20)
 
         # Decode and print the generated caption and display the image
         generated_caption = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         generated_caption = generated_caption.capitalize() + '.'
 
-        # Save the caption and image path to the CSV file
-        with open(output_csv, 'a') as file:
-            file.write(f"{generated_caption},{image_path}\n")
+        if not os.path.exists(output_csv):
+            with open(output_csv, 'w') as file:
+                file.write("Caption,Image_Path\n")  # Add header if the file is created
 
+        with open(output_csv, 'a') as file:
+                file.write(f"{generated_caption},{image_path}\n")
+
+        print(f"Caption for image: {image_path}")
+        print("Generated Caption: ", generated_caption)
     except Exception as e:
         print("An error occurred:", str(e))
 
