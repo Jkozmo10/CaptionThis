@@ -38,18 +38,6 @@ def process_image(image_path, output_csv):
         # Resize the image to reduce system resource usage
         img = img.resize((DESIRED_WIDTH, DESIRED_HEIGHT), Image.LANCZOS)
 
-        '''
-        # Define the model and processor
-        model_name = "Salesforce/blip-image-captioning-base"
-        processor = BlipProcessor.from_pretrained(model_name)
-        model = BlipForConditionalGeneration.from_pretrained(model_name).to(device)
-        model_path = "8k_model/CaptionThis_model_final.pth"
-        #model.load_state_dict(torch.load(model_path))
-        model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
-        model.eval()  # Set the model to evaluation mode
-        model.to(device)
-        '''
-
         # Convert the image to torch format for the model and move to the same device as the model
         inputs = processor(images=img, return_tensors="pt").to(device)
 
@@ -67,8 +55,12 @@ def process_image(image_path, output_csv):
         with open(output_csv, 'a') as file:
                 file.write(f"{generated_caption},{image_path}\n")
 
+        print("--------------------------------------------")
         print(f"Caption for image: {image_path}")
-        print("Generated Caption: ", generated_caption)
+        print("Generated Caption: ")
+        print(generated_caption)
+        print("--------------------------------------------")
+        print("\n")
     except Exception as e:
         print("An error occurred:", str(e))
 
